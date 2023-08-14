@@ -24,7 +24,11 @@ class WazeHooker(
                     }
                 }
             )
+        } catch (e: Exception) {
+            Log.e(TAG, "handleLoadPackage: Could not hook NativeManager.onNativeLooperPrepared()", e)
+        }
 
+        try {
             XposedHelpers.findAndHookMethod(
                 "com.waze.ConfigManager",
                 classLoader,
@@ -37,7 +41,11 @@ class WazeHooker(
                     }
                 }
             )
+        } catch (e: Exception) {
+            Log.e(TAG, "handleLoadPackage: Could not hook ConfigManager.onConfigSynced()", e)
+        }
 
+        try {
             XposedHelpers.findAndHookMethod(
                 "com.waze.config.PreferencesConfigNativeManager",
                 classLoader,
@@ -51,38 +59,42 @@ class WazeHooker(
                 }
             )
         } catch (e: Exception) {
-            Log.e(TAG, "handleLoadPackage: Could not hook NativeManager.onNativeLooperPrepared()", e)
+            Log.e(TAG, "handleLoadPackage: Could not hook PreferencesConfigNativeManager.onPreferencesConfigSynced()", e)
         }
     }
 
     fun setPlaySpeedCameraSoundBelowSpeedLimitConfig() {
-        val configValuesClass = XposedHelpers.findClass(
-            "com.waze.config.ConfigValues",
-            classLoader
-        )
-        val playSpeedCameraSoundBelowSpeedLimitField = XposedHelpers.findField(
-            configValuesClass,
-            "CONFIG_VALUE_ALERTS_PLAY_SPEED_CAMERA_SOUND_BELOW_SPEED_LIMIT"
-        )
-        val configManagerClass = XposedHelpers.findClass(
-            "com.waze.ConfigManager",
-            classLoader
-        )
-        val configManager = XposedHelpers.callStaticMethod(
-            configManagerClass,
-            "getInstance"
-        )
-        val setConfigValueBoolMethod = XposedHelpers.findMethodExact(
-            configManagerClass,
-            "setConfigValueBool",
-            playSpeedCameraSoundBelowSpeedLimitField.type,
-            Boolean::class.javaPrimitiveType
-        )
-        Log.d(TAG, "setConfig: Setting CONFIG_VALUE_ALERTS_PLAY_SPEED_CAMERA_SOUND_BELOW_SPEED_LIMIT to true")
-        setConfigValueBoolMethod.invoke(
-            configManager,
-            playSpeedCameraSoundBelowSpeedLimitField.get(null),
-            true
-        )
+        try {
+            val configValuesClass = XposedHelpers.findClass(
+                "com.waze.config.ConfigValues",
+                classLoader
+            )
+            val playSpeedCameraSoundBelowSpeedLimitField = XposedHelpers.findField(
+                configValuesClass,
+                "CONFIG_VALUE_ALERTS_PLAY_SPEED_CAMERA_SOUND_BELOW_SPEED_LIMIT"
+            )
+            val configManagerClass = XposedHelpers.findClass(
+                "com.waze.ConfigManager",
+                classLoader
+            )
+            val configManager = XposedHelpers.callStaticMethod(
+                configManagerClass,
+                "getInstance"
+            )
+            val setConfigValueBoolMethod = XposedHelpers.findMethodExact(
+                configManagerClass,
+                "setConfigValueBool",
+                playSpeedCameraSoundBelowSpeedLimitField.type,
+                Boolean::class.javaPrimitiveType
+            )
+            Log.d(TAG, "setPlaySpeedCameraSoundBelowSpeedLimitConfig: Setting CONFIG_VALUE_ALERTS_PLAY_SPEED_CAMERA_SOUND_BELOW_SPEED_LIMIT to true")
+            setConfigValueBoolMethod.invoke(
+                configManager,
+                playSpeedCameraSoundBelowSpeedLimitField.get(null),
+                true
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "setPlaySpeedCameraSoundBelowSpeedLimitConfig: Failed to set CONFIG_VALUE_ALERTS_PLAY_SPEED_CAMERA_SOUND_BELOW_SPEED_LIMIT", e)
+        }
     }
 }
