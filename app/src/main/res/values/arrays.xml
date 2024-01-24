@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="scope">
+        <item>com.google.android.projection.gearhead</item>
+        <item>com.waze</item>
+    </array>
+</resources>
