@@ -4,7 +4,7 @@ The following README.md has been generated with ChatGPT and might still not be a
 
 ## About
 
-Welcome to the repository for **Android Auto+**, an innovative Xposed module designed to enhance your experience with Android Auto and related apps. This module aims to bring additional functionality and convenience to the existing features of Android Auto and Waze.
+**Android Auto+** is an Xposed module designed to enhance your experience with Android Auto and related apps. This module aims to bring additional functionality and bypass restrictions on existing features of Android Auto and related apps such as Waze.
 
 ## Features
 
