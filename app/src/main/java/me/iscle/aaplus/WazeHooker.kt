@@ -19,10 +19,13 @@ class WazeHooker(
          * after syncing with the local database and also after syncing with the server.
          */
         try {
-            XposedHelpers.findAndHookMethod(
+            val nativeManagerClass = XposedHelpers.findClass(
                 "com.waze.NativeManager",
-                classLoader,
-                "onNativeLooperPrepared",
+                classLoader
+            )
+            val onNativeLooperPreparedMethod = nativeManagerClass.superclass?.getDeclaredMethod("onNativeLooperPrepared")
+            XposedBridge.hookMethod(
+                onNativeLooperPreparedMethod,
                 object : XC_MethodHook() {
                     override fun afterHookedMethod(param: MethodHookParam?) {
                         if (param == null) return
