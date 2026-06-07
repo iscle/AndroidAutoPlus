@@ -15,12 +15,28 @@ android {
         targetSdk = 36
         // Defaults for local builds; the release CI workflow overrides these from the git tag
         // (-PappVersionName) and the run number (-PappVersionCode).
-        versionCode = (project.findProperty("appVersionCode") as String?)?.toInt() ?: 3
-        versionName = (project.findProperty("appVersionName") as String?) ?: "1.2"
+        versionCode = (project.findProperty("appVersionCode") as String?)?.toInt() ?: 4
+        versionName = (project.findProperty("appVersionName") as String?) ?: "1.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+    }
+
+    // Release signing key. Provided by the CI workflow via environment variables (decoded from
+    // GitHub secrets); when absent (local builds) we fall back to the debug key below. Using a
+    // single, stable key for every release is what lets users update in place instead of
+    // hitting a signature mismatch.
+    val releaseKeystoreFile = System.getenv("RELEASE_KEYSTORE_FILE")
+    signingConfigs {
+        if (releaseKeystoreFile != null) {
+            create("release") {
+                storeFile = file(releaseKeystoreFile)
+                storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("RELEASE_KEY_ALIAS")
+                keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+            }
         }
     }
 
@@ -31,10 +47,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // Sign release builds with the debug key so the CI-produced APK is installable
-            // without any keystore secrets. Replace with a real signingConfig if you ever
-            // want to publish properly signed builds.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = if (releaseKeystoreFile != null) {
+                signingConfigs.getByName("release")
+            } else {
+                // Local builds without the release secrets: debug-sign so the APK still installs.
+                signingConfigs.getByName("debug")
+            }
         }
     }
     compileOptions {
