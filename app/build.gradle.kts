@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "me.iscle.aaplus"
-    compileSdk = 37
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "me.iscle.aaplus"
         minSdk = 26
-        targetSdk = 37
+        targetSdk = 36
         // Defaults for local builds; the release CI workflow overrides these from the git tag
         // (-PappVersionName) and the run number (-PappVersionCode).
         versionCode = (project.findProperty("appVersionCode") as String?)?.toInt() ?: 2
@@ -60,7 +60,9 @@ kotlin {
 
 dependencies {
     compileOnly(files("libs/api-82.jar"))
-    implementation("androidx.core:core-ktx:1.19.0")
+    // Pinned to 1.18.0: 1.19.0 requires compileSdk 37 (Android 17), which is not yet
+    // published to the public SDK repo used by CI runners.
+    implementation("androidx.core:core-ktx:1.18.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
     implementation("androidx.activity:activity-compose:1.13.0")
     implementation(platform("androidx.compose:compose-bom:2026.05.01"))
