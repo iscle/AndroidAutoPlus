@@ -3,6 +3,7 @@ package me.iscle.aaplus
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -47,7 +48,13 @@ class MainActivity : ComponentActivity() {
                     topBar = {
                         TopAppBar(
                             title = {
-                                Text("Android Auto+")
+                                Column {
+                                    Text("Android Auto+")
+                                    Text(
+                                        text = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                                        style = MaterialTheme.typography.labelSmall,
+                                    )
+                                }
                             }
                         )
                     },
