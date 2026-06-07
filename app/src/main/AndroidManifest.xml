@@ -31,6 +31,15 @@
         <meta-data
             android:name="xposedminversion"
             android:value="82" />
+        <!--
+            Opt in to LSPosed's "new XSharedPreferences": LSPosed hooks ContextImpl so the
+            settings UI can request a world-readable SharedPreferences (MODE_WORLD_READABLE,
+            removed from Android since API 24) and the hooks can read it back via
+            XSharedPreferences. See https://github.com/LSPosed/LSPosed/wiki/New-XSharedPreferences
+        -->
+        <meta-data
+            android:name="xposedsharedprefs"
+            android:value="true" />
         <meta-data
             android:name="xposedscope"
             android:resource="@array/scope" />

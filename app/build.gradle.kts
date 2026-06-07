@@ -15,8 +15,8 @@ android {
         targetSdk = 36
         // Defaults for local builds; the release CI workflow overrides these from the git tag
         // (-PappVersionName) and the run number (-PappVersionCode).
-        versionCode = (project.findProperty("appVersionCode") as String?)?.toInt() ?: 2
-        versionName = (project.findProperty("appVersionName") as String?) ?: "1.1"
+        versionCode = (project.findProperty("appVersionCode") as String?)?.toInt() ?: 3
+        versionName = (project.findProperty("appVersionName") as String?) ?: "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

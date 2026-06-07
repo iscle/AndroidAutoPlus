@@ -1,6 +1,5 @@
 package me.iscle.aaplus.ui
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import me.iscle.aaplus.Constants
+import me.iscle.aaplus.getModuleSharedPreferences
 import me.iscle.aaplus.ui.component.SettingCategory
 import me.iscle.aaplus.ui.component.SwitchSetting
 
@@ -20,7 +20,7 @@ fun AndroidAutoSettingsComposable(
 ) {
     val context = LocalContext.current
     val preferences = remember(context) {
-        context.getSharedPreferences(Constants.ANDROID_AUTO_SETTINGS, Context.MODE_WORLD_READABLE)
+        context.getModuleSharedPreferences(Constants.ANDROID_AUTO_SETTINGS)
     }
 
     var hookMusicStreamVolume by remember(preferences) { mutableStateOf(
