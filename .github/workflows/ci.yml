@@ -1,0 +1,40 @@
+name: Build APK
+
+# Compile the release APK on every push and pull request so build breakages are caught early.
+# This does not publish a release (that is release.yml, triggered by version tags); with no signing
+# secrets available the build debug-signs itself via the fallback in app/build.gradle.kts.
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android platform 36
+        run: sdkmanager "platforms;android-36"
+
+      - name: Build release APK
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:assembleRelease
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: app/build/outputs/apk/release/app-release.apk
