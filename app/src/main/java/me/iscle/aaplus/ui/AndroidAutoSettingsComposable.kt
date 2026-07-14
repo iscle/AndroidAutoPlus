@@ -30,6 +30,13 @@ fun AndroidAutoSettingsComposable(
         )
     ) }
 
+    var frequencyDuck by remember(preferences) { mutableStateOf(
+        preferences.getBoolean(
+            Constants.SETTING_ANDROID_AUTO_FREQUENCY_DUCK,
+            Constants.SETTING_ANDROID_AUTO_FREQUENCY_DUCK_DEFAULT
+        )
+    ) }
+
     Column(
         modifier = modifier,
     ) {
@@ -41,6 +48,19 @@ fun AndroidAutoSettingsComposable(
                     hookMusicStreamVolume = it
                     preferences.edit().putBoolean(
                         Constants.SETTING_ANDROID_AUTO_HOOK_MUSIC_STREAM_VOLUME,
+                        it
+                    ).apply()
+                    onSettingChanged()
+                },
+            )
+
+            SwitchSetting(
+                title = "Bass-preserving navigation ducking",
+                checked = frequencyDuck,
+                onCheckedChange = {
+                    frequencyDuck = it
+                    preferences.edit().putBoolean(
+                        Constants.SETTING_ANDROID_AUTO_FREQUENCY_DUCK,
                         it
                     ).apply()
                     onSettingChanged()
