@@ -7,6 +7,7 @@ class Hooker : IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam?) {
         if (lpparam == null) return
         when (lpparam.packageName) {
+            "android" -> SystemAudioHooker(lpparam.classLoader)
             "com.google.android.projection.gearhead" -> AndroidAutoHooker(lpparam.classLoader)
             "com.waze" -> WazeHooker(lpparam.classLoader)
         }

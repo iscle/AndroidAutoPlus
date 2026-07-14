@@ -36,18 +36,6 @@ class AndroidAutoHooker(
                             Log.e(TAG, "onCreate: hookMusicStreamVolume failed", e)
                         }
                     }
-
-                    if (settings.getBoolean(
-                            Constants.SETTING_ANDROID_AUTO_FREQUENCY_DUCK,
-                            Constants.SETTING_ANDROID_AUTO_FREQUENCY_DUCK_DEFAULT
-                    )) {
-                        try {
-                            Log.d(TAG, "onCreate: hookFrequencyDuck")
-                            hookFrequencyDuck(applicationContext)
-                        } catch (e: Exception) {
-                            Log.e(TAG, "onCreate: hookFrequencyDuck failed", e)
-                        }
-                    }
                 }
             }
         )

@@ -7,9 +7,10 @@ object Constants {
     const val SETTING_ANDROID_AUTO_HOOK_MUSIC_STREAM_VOLUME = "hook_music_stream_volume"
     const val SETTING_ANDROID_AUTO_HOOK_MUSIC_STREAM_VOLUME_DEFAULT = false
 
-    // Replaces Android Auto's volume-based ducking (music goes quiet while navigation speaks)
-    // with a frequency-selective duck: high frequencies are attenuated while the low end is kept,
-    // the way clubs and radio stations lower a track under an announcement.
+    // Replaces the OS's volume-based ducking (music goes quiet while navigation speaks) with a
+    // frequency-selective duck: high frequencies are attenuated while the low end is kept, the way
+    // clubs and radio stations lower a track under an announcement. Applied by SystemAudioHooker
+    // inside system_server, since that is where the duck actually happens (see that class).
     const val SETTING_ANDROID_AUTO_FREQUENCY_DUCK = "frequency_selective_duck"
     const val SETTING_ANDROID_AUTO_FREQUENCY_DUCK_DEFAULT = false
 
